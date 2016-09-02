@@ -9,24 +9,63 @@
  */
 angular.module('finansesApp')
   .controller('MainCtrl', function ($scope, $http) {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+      var headers = {
+         'Authorization': 'Token token=secret',
+         'Accept': 'application/json;odata=verbose'
+       };
 
-    $scope.submit = function(){
-    	$http({
-	        method: 'GET',
-	        url: '/api/transactions'
-	    })
-	    .then(
-	        function successCallback(response) {
-	          console.log(response);
-	        },
-	        function errorCallback(response) {
-	          console.log(response);
-	        }
-	      );
-    };
+      $scope.getTransactions = function(){
+         $http({
+            method: 'GET',
+            url: '/api/transactions',
+            headers : headers
+         })
+         .then(
+            function successCallback(response) {
+               $scope.transactions = response.data;
+            },
+            function errorCallback(response) {
+               console.log(response);
+            }
+         );
+      }
+
+      $scope.destroyTransaction = function(transactionId){
+         $http({
+            method: 'DELETE',
+            url: '/api/transactions/' + transactionId,
+            headers : headers
+         })
+         .then(
+            function successCallback(response) {
+               console.log(response);
+               alert('asdasd');
+               $scope.getTransactions();
+            },
+            function errorCallback(response) {
+               console.log(response);
+               alert('asdasd');
+            }
+         );
+      }
+
+      $scope.addTransaction = function() {
+         $http({
+            method: 'POST',
+            url: '/api/transactions/create',
+            headers : headers,
+            data: { transaction : $scope.formData }
+         })
+         .then(
+            function successCallback(response) {
+               $scope.formData = {};
+               $scope.getTransactions()
+            },
+            function errorCallback(response) {
+               console.log(response);
+            }
+         );
+      };
+
+      $scope.getTransactions();
   });
