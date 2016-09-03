@@ -12,7 +12,7 @@ angular.module('finansesApp')
       var headers = {
          'Authorization': 'Token token=secret',
          'Accept': 'application/json;odata=verbose'
-       };
+      };
 
       $scope.getTransactions = function(){
          $http({
@@ -38,8 +38,6 @@ angular.module('finansesApp')
          })
          .then(
             function successCallback(response) {
-               console.log(response);
-               alert('asdasd');
                $scope.getTransactions();
             },
             function errorCallback(response) {
