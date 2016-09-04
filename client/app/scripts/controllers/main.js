@@ -9,6 +9,7 @@
  */
 angular.module('finansesApp')
   .controller('MainCtrl', function ($scope, $http) {
+      $scope.modalControl = {};
       var headers = {
          'Authorization': 'Token token=secret',
          'Accept': 'application/json;odata=verbose'
@@ -22,6 +23,15 @@ angular.module('finansesApp')
          })
          .then(
             function successCallback(response) {
+               var jsonTransactions = response.data;
+               jsonTransactions.forEach(function(transaction){
+                  var date = transaction.date;
+                  var pattern = /(\d\d\d\d)-(\d\d)-(\d\d)/;
+                  var results = pattern.exec(date)
+                  if (results)
+                     transaction.date = results[3] + '/' + results[2] + '/' + results[1];
+               });
+
                $scope.transactions = response.data;
             },
             function errorCallback(response) {
@@ -29,6 +39,10 @@ angular.module('finansesApp')
             }
          );
       }
+
+      $scope.$on("modalClose", function(){
+         $scope.getTransactions()
+      })
 
       $scope.destroyTransaction = function(transactionId){
          $http({
@@ -47,17 +61,38 @@ angular.module('finansesApp')
          );
       }
 
-      $scope.addTransaction = function() {
+      $scope.editTransaction = function(transaction){
+         $scope.modalControl.formData = {
+            description : transaction.description,
+            value : transaction.value,
+            date : transaction.date,
+            id : transaction.id
+         }
+         $scope.modalControl.open();
+      }
+
+      $scope.addTransaction = function(){
+         $scope.modalControl.open();
+      }
+
+      $scope.modalControl.addTransaction = function() {
+         var url;
+         console.log($scope.modalControl.formData)
+         if ($scope.modalControl.formData.id > 0)
+            url = '/api/transactions/edit/' + $scope.modalControl.formData.id;
+         else
+            url = '/api/transactions/create';
+
          $http({
             method: 'POST',
-            url: '/api/transactions/create',
+            url: url,
             headers : headers,
-            data: { transaction : $scope.formData }
+            data: { transaction : $scope.modalControl.formData }
          })
          .then(
             function successCallback(response) {
-               $scope.formData = {};
-               $scope.getTransactions()
+               $scope.modalControl.formData = {};
+               $scope.modalControl.close();
             },
             function errorCallback(response) {
                console.log(response);

@@ -19,6 +19,13 @@ class TransactionsController < ApplicationController
       respond_with Transaction.create(transaction_params)
    end
 
+   def edit
+      @transaction = Transaction.find(params[:id])
+      @transaction.update(transaction_params)
+
+      render json: @transaction
+   end
+
    def destroy
       respond_with Transaction.destroy(params[:id])
    end
