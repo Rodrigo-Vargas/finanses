@@ -1,22 +1,19 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  before_action :cors_preflight_check
-  after_action :cors_set_access_control_headers
+  skip_before_action :verify_authenticity_token
 
-  def cors_set_access_control_headers
-    logger.info('Teste')
-    headers['Access-Control-Allow-Origin'] = '*'
-    headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
-    headers['Access-Control-Allow-Headers'] = 'origin, content-type, accept, x-requested-with'
-    headers['Access-Control-Max-Age'] = "1728000"
+  def authenticate
+    authenticate_token || render_unauthorized
   end
 
-  def cors_preflight_check
-    if request.method == :options
-      headers['Access-Control-Allow-Origin'] = '*'
-      headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
-      headers['Access-Control-Allow-Headers'] = 'origin, content-type, accept, x-requested-with'
-      headers['Access-Control-Max-Age'] = '1728000'
+  def authenticate_token
+    authenticate_or_request_with_http_token do |token, options|
+      return User.find_by(auth_token: token)
     end
+  end
+
+  def render_unauthorized
+    self.headers['WWW-Authenticate'] = 'Token realm="Application"'
+    render json: 'Bad credentials', status: 401
   end
 end

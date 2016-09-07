@@ -1,11 +1,10 @@
 Rails.application.routes.draw do
 	scope '/api' do
-		#get    'transactions',           to: 'transactions#index'
-    match '/transactions',           to: "transactions#index", via: [:options, :get]
-    get    'transaction',            to: 'transaction#show', as: :transaction
-    post   '/transactions/create',   to: 'transactions#create'
-    post   '/transactions/edit/:id', to: 'transactions#edit'
-    delete '/transactions/:id',      to: 'transactions#destroy'
-    post   '/upload',                to: 'transactions#upload'
+    resources :users,         except: [:show, :new, :edit, :update, :index, :destroy]
+    post '/users/login',       to: 'users#login'
+    resources :transactions,  except: [:show, :new, :edit]   
+		post   '/upload',         to: 'transactions#upload'    
 	end
+  
+  match "*path",              to: redirect("/index.html"), via: :all
 end

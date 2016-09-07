@@ -8,10 +8,18 @@
  * Controller of the finansesApp
  */
 angular.module('finansesApp')
-  .controller('MainCtrl', function ($scope, $http) {
+  .controller('MainCtrl', function ($scope, $http, $location, UserInfoService) {
+      var currentUserInfo = UserInfoService.get();
+      if (!currentUserInfo)
+      {
+         $location.path('/login');
+         return;
+      }
+
       $scope.modalControl = {};
+
       var headers = {
-         'Authorization': 'Token token=secret',
+         'Authorization': 'Token token=' + currentUserInfo.token,
          'Accept': 'application/json;odata=verbose'
       };
 
@@ -77,7 +85,6 @@ angular.module('finansesApp')
 
       $scope.modalControl.addTransaction = function() {
          var url;
-         console.log($scope.modalControl.formData)
          if ($scope.modalControl.formData.id > 0)
             url = '/api/transactions/edit/' + $scope.modalControl.formData.id;
          else

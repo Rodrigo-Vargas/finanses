@@ -19,7 +19,7 @@ angular
     'angularFileUpload',
     'ui.bootstrap'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -31,9 +31,26 @@ angular
         controller: 'ImportersCtrl',
         controllerAs: 'importers'
       })
+      .when('/signup', {
+        templateUrl: 'views/signup.html',
+        controller: 'SignupCtrl', 
+        controllerAs: 'signup'
+      })
+      .when('/login', {
+        templateUrl: 'views/login.html',
+        controller: 'LoginCtrl', 
+        controllerAs: 'login'
+      })
+      .when('/logout', {
+        templateUrl: 'views/logout.html',
+        controller: 'LogoutCtrl', 
+        controllerAs: 'logout'
+      })
       .otherwise({
         redirectTo: '/'
       });
+
+      $locationProvider.html5Mode(true);
   })
   .filter('money', function(){
     return function(input, unit, decimalPlaces, decimalUnit) {
@@ -56,6 +73,32 @@ angular
 
       return output;
     }
+  })
+  .factory('UserInfoService', function($cookies) {
+    var userInfo;
+
+    return {
+      get : function(){
+        if (!userInfo)
+        {
+          if ($cookies.get('userInfo'))
+            userInfo = JSON.parse($cookies.get('userInfo'));
+        }
+
+        return userInfo;
+      },
+      set : function(value){
+        userInfo = value;
+
+        var expirationDate = new Date();
+        expirationDate.setMinutes(expirationDate.getMinutes() + 60);
+        $cookies.put('userInfo', JSON.stringify(userInfo), {'expires' : expirationDate });
+      },
+      clear: function() {
+        userInfo = null;
+        $cookies.remove('userInfo');
+      }
+    };
   })
   .directive('rvgModal', function(){
     return {

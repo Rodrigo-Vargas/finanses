@@ -5,6 +5,7 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+     <base href="/">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
@@ -24,15 +25,18 @@
     <div class="container-fluid">
       <header>
         <div class="logo">
-          <a class="" href="#/">Finan$es</a>
+          <a class="" href="/">Finan$es</a>
+        </div>
+        <div class="user-info-wrapper">
+          <a class="btn btn-default" href="/logout">Sair</a>
         </div>
       </header>
       <div class="row">
         <div class="col-xs-2">        
           <div class="side-nav">
             <ul>
-              <li class="active"><a href="#/">Lançamentos</a></li>
-              <li class="active"><a href="#/importadores">Importadores</a></li>
+              <li class="active"><a href="/">Lançamentos</a></li>
+              <li class="active"><a href="/importadores">Importadores</a></li>
             </ul>
           </div>
         </div>
@@ -83,6 +87,9 @@
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/importers.js"></script>
+        <script src="scripts/controllers/signup.js"></script>
+        <script src="scripts/controllers/logout.js"></script>
+        <script src="scripts/controllers/login.js"></script>
         <!-- endbuild -->
 </body>
 </html>
