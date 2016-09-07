@@ -1,3 +1,7 @@
+<div class="commands-wrapper">
+  <a class="btn btn-primary" ng-click="addTransaction()">Adicionar</a>  
+</div>
+
 <div class="transaction-list">
   <div class="item" ng-repeat="transaction in transactions track by transaction.id">
     <div class="row">
@@ -19,7 +23,5 @@
     </div>
   </div>
 </div>
-
-<a class="btn btn-primary" ng-click="addTransaction()">Adicionar</a>
 
 <rvg-modal control="modalControl" template-url="modalTemplate.html"></rvg-modal> 

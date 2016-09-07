@@ -92,8 +92,8 @@ module.exports = function (grunt) {
       proxies: [
         {
           context: '/api',
-          host: 'http://finanses.herokuapp.com',
-          port: 80
+          host: 'localhost',
+          port: 3000
         }
       ],
       livereload: {

@@ -39,6 +39,10 @@ angular.module('finansesApp')
          $scope.importedTransactions.splice(index, 1);
       }
 
+      uploader.onAfterAddingFile = function(fileItem){
+         fileItem.upload();
+      }
+
       uploader.onBeforeUploadItem = function(item) {
          item.headers = headers;
       };

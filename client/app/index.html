@@ -21,26 +21,32 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="row">
-      <div class="col-xs-2">        
-        <div class="">
-          <a class="" href="#/">finanses</a>
-          <ul>
-            <li class="active"><a href="#/">Lançamentos</a></li>
-            <li class="active"><a href="#/importadores">Importadores</a></li>
-          </ul>
+    <div class="container-fluid">
+      <header>
+        <div class="logo">
+          <a class="" href="#/">Finan$es</a>
         </div>
-      </div>
-        <div class="col-xs-10">
-          <div class="container">
-            <div ng-view=""></div>
+      </header>
+      <div class="row">
+        <div class="col-xs-2">        
+          <div class="side-nav">
+            <ul>
+              <li class="active"><a href="#/">Lançamentos</a></li>
+              <li class="active"><a href="#/importadores">Importadores</a></li>
+            </ul>
           </div>
-      </div>
-    </div>    
+        </div>
+          <div class="col-xs-10">
+            <div class="container">
+              <div ng-view=""></div>
+            </div>
+        </div>
+      </div>    
 
-    <div class="footer">
-      <div class="container">
-        
+      <div class="footer">
+        <div class="container">
+          
+        </div>
       </div>
     </div>
 

@@ -7,6 +7,15 @@ body {
   background-color: #EAEAEA;
 }
 
+header {
+  background-color: #888;
+}
+/* Transations */
+
+.commands-wrapper {
+  margin: 10px;
+}
+
 .imported-list .item {
   background-color: #fff;
   border: 1px solid #ccc;
@@ -14,14 +23,45 @@ body {
   margin: 5px 0;
 }
 
+.transaction-list {
+  margin: 10px 0;
+}
+
 .transaction-list .item{
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
-  margin: 5px;
+  margin: 2px;
   padding: 5px;
 }
 
 .icon i {
   color: #000;
+}
+
+.side-nav {
+  background-color: #ddd;
+}
+
+.side-nav ul {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+}
+
+.side-nav li {
+  border-bottom: 1px solid #888;
+  margin: 0px;
+}
+
+.side-nav a, .side-nav a:focus {
+  color: #444;
+  display: block;
+  padding: 20px 10px;
+  text-decoration: none;
+}
+
+.side-nav a:hover {
+  background-color: #169a01;
+  color: #eee;
 }
