@@ -31,6 +31,11 @@ angular
         controller: 'ImportersCtrl',
         controllerAs: 'importers'
       })
+      .when('/categorias', {
+        templateUrl: 'views/categories.html',
+        controller: 'CategoriesCtrl',
+        controllerAs: 'categories'
+      })
       .when('/signup', {
         templateUrl: 'views/signup.html',
         controller: 'SignupCtrl', 

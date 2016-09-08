@@ -32,13 +32,13 @@ angular.module('finansesApp')
          .then(
             function successCallback(response) {
                var jsonTransactions = response.data;
-               jsonTransactions.forEach(function(transaction){
+               /*jsonTransactions.forEach(function(transaction){
                   var date = transaction.date;
                   var pattern = /(\d\d\d\d)-(\d\d)-(\d\d)/;
                   var results = pattern.exec(date)
                   if (results)
                      transaction.date = results[3] + '/' + results[2] + '/' + results[1];
-               });
+               });*/
 
                $scope.transactions = response.data;
             },
@@ -64,7 +64,6 @@ angular.module('finansesApp')
             },
             function errorCallback(response) {
                console.log(response);
-               alert('asdasd');
             }
          );
       }
@@ -84,7 +83,6 @@ angular.module('finansesApp')
       }
 
       $scope.modalControl.addTransaction = function() {
-         console.log('addTransaction')
          var url;
          $scope.modalControl.formData.user_id = 1;
          if ($scope.modalControl.formData.id > 0)

@@ -2,6 +2,7 @@ require 'securerandom'
 
 class User < ApplicationRecord
   has_many :transactions
+  has_many :categories
   before_create :set_auth_token  
 
   private 
