@@ -84,11 +84,13 @@ angular.module('finansesApp')
       }
 
       $scope.modalControl.addTransaction = function() {
+         console.log('addTransaction')
          var url;
+         $scope.modalControl.formData.user_id = 1;
          if ($scope.modalControl.formData.id > 0)
             url = '/api/transactions/edit/' + $scope.modalControl.formData.id;
          else
-            url = '/api/transactions/create';
+            url = '/api/transactions';
 
          $http({
             method: 'POST',

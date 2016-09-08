@@ -1,7 +1,8 @@
 require 'securerandom'
 
 class User < ApplicationRecord
-  before_create :set_auth_token
+  has_many :transactions
+  before_create :set_auth_token  
 
   private 
     def set_auth_token

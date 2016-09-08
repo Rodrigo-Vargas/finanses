@@ -3,7 +3,10 @@ class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token
 
   def authenticate
-    authenticate_token || render_unauthorized
+    @currentUser = authenticate_token 
+    if !@currentUser
+      render_unauthorized
+    end
   end
 
   def authenticate_token

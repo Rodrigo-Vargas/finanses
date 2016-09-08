@@ -3,21 +3,20 @@ class TransactionsController < ApplicationController
    respond_to :json
 
 	def index
-		@transactions = Transaction.all
-
-		render json: @transactions, status: 200
+		render json: @currentUser.transactions
 	end
 
   def create
-    respond_with Transaction.create(transaction_params)
+    @transaction = @currentUser.transactions.create(transaction_params)
+    render json: @transaction
   end
 
-   def edit
-      @transaction = Transaction.find(params[:id])
-      @transaction.update(transaction_params)
+  def edit
+     @transaction = Transaction.find(params[:id])
+     @transaction.update(transaction_params)
 
-      render json: @transaction
-   end
+     render json: @transaction
+  end
 
    def destroy
       respond_with Transaction.destroy(params[:id])
@@ -56,6 +55,6 @@ class TransactionsController < ApplicationController
    end
 
    def transaction_params
-      params.require(:transaction).permit(:description, :value, :date)
+      params.require(:transaction).permit(:description, :value, :date, :user_id)
    end
 end
