@@ -5,6 +5,11 @@ class CategoriesController < ApplicationController
     render json: { "categories" => @currentUser.categories }
   end
 
+  def show
+    @category = Category.find(params[:id])
+    render json: { "category" => @category}
+  end
+
   def create
     @category = @currentUser.categories.create(category_params)
     render json: @category

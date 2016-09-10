@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     resources :users,         except: [:show, :new, :edit, :update, :index, :destroy]
     post '/users/login',       to: 'users#login'
     resources :transactions,  except: [:show, :new, :edit]
-    resources :categories,    except: [:show, :new, :edit]   
+    resources :categories,    except: [:new, :edit]   
 		post   '/upload',         to: 'transactions#upload'    
 	end
   

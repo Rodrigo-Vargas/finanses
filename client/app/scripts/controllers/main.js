@@ -17,11 +17,29 @@ angular.module('finansesApp')
       }
 
       $scope.modalControl = {};
+      $scope.transactions = [];
 
       var headers = {
          'Authorization': 'Token token=' + currentUserInfo.token,
          'Accept': 'application/json;odata=verbose'
       };
+
+      $scope.getCategories = function(){
+         $http({
+            method: 'GET',
+            url: '/api/categories',
+            headers : headers
+         })
+         .then(
+            function successCallback(response) {
+               console.log(response);
+               $scope.modalControl.categories = response.data.categories;
+            },
+            function errorCallback(response) {
+               console.log(response);
+            }
+         );
+      }
 
       $scope.getTransactions = function(){
          $http({
@@ -31,16 +49,20 @@ angular.module('finansesApp')
          })
          .then(
             function successCallback(response) {
-               var jsonTransactions = response.data;
-               /*jsonTransactions.forEach(function(transaction){
-                  var date = transaction.date;
-                  var pattern = /(\d\d\d\d)-(\d\d)-(\d\d)/;
-                  var results = pattern.exec(date)
-                  if (results)
-                     transaction.date = results[3] + '/' + results[2] + '/' + results[1];
-               });*/
-
-               $scope.transactions = response.data;
+               response.data.forEach(function(transaction){
+                  $http({
+                        method: 'GET',
+                        url: '/api/categories/' + transaction.category_id,
+                        headers : headers
+                  }).
+                  then(
+                     function successCallback(response){
+                        transaction.category = response.data.category;
+                        console.log(transaction);
+                        $scope.transactions.push(transaction);
+                     }
+                  );
+               })
             },
             function errorCallback(response) {
                console.log(response);
@@ -84,7 +106,6 @@ angular.module('finansesApp')
 
       $scope.modalControl.addTransaction = function() {
          var url;
-         $scope.modalControl.formData.user_id = 1;
          if ($scope.modalControl.formData.id > 0)
             url = '/api/transactions/edit/' + $scope.modalControl.formData.id;
          else
@@ -100,6 +121,7 @@ angular.module('finansesApp')
             function successCallback(response) {
                $scope.modalControl.formData = {};
                $scope.modalControl.close();
+               $scope.getTransactions();
             },
             function errorCallback(response) {
                console.log(response);
@@ -107,5 +129,6 @@ angular.module('finansesApp')
          );
       };
 
+      $scope.getCategories();
       $scope.getTransactions();
   });
