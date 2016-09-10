@@ -8,22 +8,28 @@
  * Controller of the finansesApp
  */
 angular.module('finansesApp')
-  .controller('ImportersCtrl', function ($scope, $http, FileUploader) {
+  .controller('ImportersCtrl', function ($scope, $http, $location, UserInfoService, FileUploader) {
+      var currentUserInfo = UserInfoService.get();
+      if (!currentUserInfo)
+      {
+         $location.path('/login');
+         return;
+      }
       var uploader = $scope.uploader = new FileUploader({
          url: '/api/upload'
       });
 
       var headers = {
-         'Authorization': 'Token token=secret',
+         'Authorization': 'Token token=' + currentUserInfo.token,
          'Accept': 'application/json;odata=verbose'
       };
 
       $scope.importItem = function(transaction, index){
          $http({
             method: 'POST',
-            url: '/api/transactions/create',
+            url: '/api/transactions',
             headers : headers,
-            data: { transaction : transaction }
+            data: { transaction : transaction.original }
          })
          .then(
             function successCallback(response) {

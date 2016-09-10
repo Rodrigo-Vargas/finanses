@@ -32,7 +32,6 @@ angular.module('finansesApp')
          })
          .then(
             function successCallback(response) {
-               console.log(response);
                $scope.modalControl.categories = response.data.categories;
             },
             function errorCallback(response) {
@@ -49,20 +48,7 @@ angular.module('finansesApp')
          })
          .then(
             function successCallback(response) {
-               response.data.forEach(function(transaction){
-                  $http({
-                        method: 'GET',
-                        url: '/api/categories/' + transaction.category_id,
-                        headers : headers
-                  }).
-                  then(
-                     function successCallback(response){
-                        transaction.category = response.data.category;
-                        console.log(transaction);
-                        $scope.transactions.push(transaction);
-                     }
-                  );
-               })
+               $scope.transactions = response.data.transactions;
             },
             function errorCallback(response) {
                console.log(response);

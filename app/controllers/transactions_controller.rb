@@ -3,11 +3,15 @@ class TransactionsController < ApplicationController
   respond_to :json
 
   def index
-    render json: @currentUser.transactions
+    @transactions = Transaction.includes(:category).where(user_id: @currentUser.id)
+    render partial: "users/show.json", content_type: "application/json"
   end
 
   def create
     @transaction = @currentUser.transactions.create(transaction_params)
+
+    @transaction.save!
+
     render json: @transaction
   end
 
@@ -36,11 +40,14 @@ class TransactionsController < ApplicationController
     array = Array.new
 
     Hash.from_xml(xml_contents)["OFX"]["BANKMSGSRSV1"]["STMTTRNRS"]["STMTRS"]["BANKTRANLIST"]["STMTTRN"].inject({}) do |result, elem| 
+      # Check for duplicated register
+      @duplicatedTransaction = Transaction.where(description: elem["MEMO"], user_id: @currentUser.id).first()
+
       @transaction =  Transaction.new
 
       year  = elem["FITID"][0..3]
       month = elem["FITID"][4..5]
-      day = elem["FITID"][6..7]
+      day   = elem["FITID"][6..7]
 
       transactionDate = DateTime.new(year.to_i, month.to_i, day.to_i, 0,0, 0, "-00:00")
 
@@ -48,7 +55,7 @@ class TransactionsController < ApplicationController
       @transaction.value = elem["TRNAMT"].gsub! '.', ''
       @transaction.date = transactionDate
 
-      array.push(@transaction)
+      array.push({ "original" => @transaction, "found" => @duplicatedTransaction});
     end
 
     render json: array

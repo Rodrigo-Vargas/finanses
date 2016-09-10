@@ -1,0 +1,16 @@
+{"transactions" : [
+                  <% @transactions.each_with_index do |transaction, index| %>
+                    {
+                      "id" : <%= transaction.id %>,
+                      "description": "<%= transaction.description %>",
+                      "value": <%= transaction.value %>,
+                      "date": "<%= transaction.date %>"
+                      <% if  transaction.category %>
+                        ,"category": {
+                                      "name" : "<%= transaction.category.name %>"
+                                    }
+                      <% end %>
+                    }
+                    <%= index < @transactions.count - 1 ? "," : "" %>
+                  <% end %>                  
+                ]}
