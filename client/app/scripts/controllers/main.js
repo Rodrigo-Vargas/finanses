@@ -16,9 +16,28 @@ angular.module('finansesApp')
          return;
       }
 
+      $scope.months =   [
+                           { id : 1,  name : "Janeiro" },
+                           { id : 2,  name : "Fevereiro" },
+                           { id : 3,  name : "Março" },
+                           { id : 4,  name : "Abril" },
+                           { id : 5,  name : "Maio" },
+                           { id : 6,  name : "Junho" },
+                           { id : 7,  name : "Julho" },
+                           { id : 8,  name : "Agosto" },
+                           { id : 9,  name : "Setembro" },
+                           { id : 10, name : "Outubro" },
+                           { id : 11, name : "Novembro" },
+                           { id : 12, name : "Dezembro" },
+                        ];
+      $scope.years = [2011, 2012, 2013, 2014, 2015, 2016];
+
+
       $scope.modalControl = {};
       $scope.transactions = [];
-
+      $scope.selectedMonth = { id : new Date().getMonth() + 1 };
+      $scope.selectedYear = new Date().getFullYear();
+      
       var headers = {
          'Authorization': 'Token token=' + currentUserInfo.token,
          'Accept': 'application/json;odata=verbose'
@@ -43,7 +62,7 @@ angular.module('finansesApp')
       $scope.getTransactions = function(){
          $http({
             method: 'GET',
-            url: '/api/transactions',
+            url: '/api/transactions/period/' + $scope.selectedMonth.id + '/' + $scope.selectedYear,
             headers : headers
          })
          .then(
@@ -56,9 +75,17 @@ angular.module('finansesApp')
          );
       }
 
-      $scope.$on("modalClose", function(){
+      $scope.monthChange = function(){
+         $scope.getTransactions();
+      }
+
+      $scope.yearChange = function(){
+         $scope.getTransactions();
+      }
+
+      /*$scope.$on("modalClose", function(){
          $scope.getTransactions()
-      })
+      })*/
 
       $scope.destroyTransaction = function(transactionId){
          $http({

@@ -100,6 +100,7 @@ angular
         $cookies.put('userInfo', JSON.stringify(userInfo), {'expires' : expirationDate });
       },
       clear: function() {
+        console.log('Clear!');
         userInfo = null;
         $cookies.remove('userInfo');
       }

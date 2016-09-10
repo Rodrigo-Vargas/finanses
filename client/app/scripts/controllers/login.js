@@ -23,8 +23,15 @@ angular.module('finansesApp')
         data : { user : $scope.formData }
       })
       .then(function success(response){
-        UserInfoService.set({ token : response.data.token });
-        $location.path('/');
+        if (response.data.success)
+        {
+          UserInfoService.set({ token : response.data.token });
+          $location.path('/');
+        }
+        else
+        {
+          alert('Credenciais incorretas');
+        }
       });
     }
   });

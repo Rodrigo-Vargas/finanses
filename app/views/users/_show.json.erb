@@ -4,7 +4,7 @@
                       "id" : <%= transaction.id %>,
                       "description": "<%= transaction.description %>",
                       "value": <%= transaction.value %>,
-                      "date": "<%= transaction.date %>"
+                      "date": "<%= transaction.date.strftime("%d/%m/%Y") %>"
                       <% if  transaction.category %>
                         ,"category": {
                                       "name" : "<%= transaction.category.name %>"

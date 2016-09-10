@@ -23,11 +23,11 @@
 
     <!-- Add your site or application content here -->
     <div class="container-fluid">
-      <header>
-        <div class="logo">
+      <header class="row">
+        <div class="logo col-xs-10">
           <a class="" href="/">Finan$es</a>
         </div>
-        <div class="user-info-wrapper">
+        <div class="user-info-wrapper col-xs-2">
           <a class="btn btn-default" href="/logout">Sair</a>
         </div>
       </header>
@@ -42,9 +42,7 @@
           </div>
         </div>
           <div class="col-xs-10">
-            <div class="container">
-              <div ng-view=""></div>
-            </div>
+            <div ng-view=""></div>
         </div>
       </div>    
 

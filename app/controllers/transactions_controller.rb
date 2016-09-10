@@ -7,6 +7,21 @@ class TransactionsController < ApplicationController
     render partial: "users/show.json", content_type: "application/json"
   end
 
+  def period
+    year = params[:year]
+    if (year.empty?)
+      year = Time.now.year
+    end
+
+    start_date = Time.parse(year + '-' + params[:month] + '-01')
+    final_day = start_date.at_end_of_month.day
+    end_date = Time.parse(year.to_s + '-' + params[:month].to_s + '-' + final_day.to_s)
+
+    @transactions = Transaction.includes(:category).in_date_range(start_date, end_date).where(user_id: @currentUser.id)
+
+    render partial: "users/show.json", content_type: "application/json"
+  end
+
   def create
     @transaction = @currentUser.transactions.create(transaction_params)
 

@@ -5,16 +5,18 @@ class UsersController < ApplicationController
   end
 
   def login
-    @user = User.find_by_name(user_params[:name])
+    @user = User.find_by_email(user_params[:email])
+    render json: @user
+    return
     if (@user.password == user_params[:password])
       render json: { 'token' => @user.auth_token }
     else
-      render json: { 'success' => 'false'}
+      render json: { 'success' => false}
     end
   end
 
   private
     def user_params
-      params.require(:user).permit(:name, :password)
+      params.require(:user).permit(:email, :password)
     end
 end
