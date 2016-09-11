@@ -6,7 +6,5 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :auth_token
       t.timestamps
     end
-
-    add_index :email, unique: true
   end
 end
