@@ -9,15 +9,26 @@
  */
 angular.module('finansesApp')
   .controller('SignupCtrl', function ($scope, $http, $location, UserInfoService) {
-    $scope.submit = function(){
+    $scope.submit = function(isValid){
+      $scope.submitted = true;
+      if (!isValid)
+        return;
+
       $http({
         method: 'POST',
         url: '/api/users',
         data : $scope.formData
       })
       .then(function success(response){
-        UserInfoService.set({ token : response.data.token });
-        $location.path('/transactions');
+        if (response.data.success)
+        {
+          UserInfoService.set({ token : response.data.token });
+          $location.path('/transactions');
+        }
+        else
+        {
+          $scope.serverMessage = "Email já cadastrado"
+        }
       },
       function error(response){
         console.log(response);

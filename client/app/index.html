@@ -23,28 +23,7 @@
 
     <!-- Add your site or application content here -->
     <div class="container-fluid">
-      <header class="row">
-        <div class="logo col-xs-10">
-          <a class="" href="/">Finan$es</a>
-        </div>
-        <div class="user-info-wrapper col-xs-2">
-          <a class="btn btn-default" href="/logout">Sair</a>
-        </div>
-      </header>
-      <div class="row">
-        <div class="col-xs-2">        
-          <div class="side-nav">
-            <ul>
-              <li class="active"><a href="/">Lançamentos</a></li>
-              <li><a href="/importadores">Importadores</a></li>
-              <li><a href="/categorias">Categorias</a></li>
-            </ul>
-          </div>
-        </div>
-          <div class="col-xs-10">
-            <div ng-view=""></div>
-        </div>
-      </div>    
+      <div ng-view=""></div>  
 
       <div class="footer">
         <div class="container">

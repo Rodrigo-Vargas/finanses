@@ -15,7 +15,11 @@ angular.module('finansesApp')
       $location.path('/');
       return;
     }    
-    $scope.submit = function(){
+    $scope.submit = function(isValid){
+      $scope.submitted = true;
+      if (!isValid)
+        return;
+
       $http(
       {
         method: 'POST',
@@ -30,7 +34,7 @@ angular.module('finansesApp')
         }
         else
         {
-          alert('Credenciais incorretas');
+          $scope.serverMessage = 'Email ou senha inválidos';
         }
       });
     }

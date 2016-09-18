@@ -1,7 +1,25 @@
-<div class="form-group">
-  <input type="text" class="form-control" placeholder="Email" ng-model="formData.email">
 
-  <input type="password" class="form-control" placeholder="Senha" ng-model="formData.password">
+<div class="form-container">
+  <div class="server-message" ng-show="serverMessage">
+    <span>{{ serverMessage }}</span>
+  </div>
+  <form name="signupForm" ng-submit="submit(signupForm.$valid)" novalidate>
+    <div class="form-group">
+      <input type="text" name="email" class="form-control" placeholder="Email" ng-model="formData.email">
+      <p ng-show="signupForm.email.$invalid && submitted" class="help-block">Email inválido</p>
+    </div>
 
-  <a class="btn btn-primary" ng-click="submit()">Cadastrar</a>
+    <div class="form-group">
+      <input type="password" name="password" class="form-control" placeholder="Senha" ng-model="formData.password">
+      <p ng-show="signupForm.password.$invalid && submitted" class="help-block">Senha inválida</p>      
+    </div>
+
+    <button type="submit" class="btn btn-block btn-primary">Cadastrar</button>
+      <div class="text-center">
+        <span>Já possui uma conta? </span>
+      </div>
+      <div class="text-center">
+        <a href="/login">Faça login agora!</a>
+      </div>
+  </form>
 </div>

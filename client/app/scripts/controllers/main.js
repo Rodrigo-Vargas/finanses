@@ -83,11 +83,10 @@ angular.module('finansesApp')
          $scope.getTransactions();
       }
 
-      /*$scope.$on("modalClose", function(){
-         $scope.getTransactions()
-      })*/
-
       $scope.destroyTransaction = function(transactionId){
+         if (!confirm('Are you sure?'))
+            return;
+
          $http({
             method: 'DELETE',
             url: '/api/transactions/' + transactionId,
