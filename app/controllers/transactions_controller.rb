@@ -13,11 +13,11 @@ class TransactionsController < ApplicationController
       year = Time.now.year
     end
 
-    start_date = Time.parse(year + '-' + params[:month] + '-01')
+    start_date = Time.parse(year + '-' + params[:month] + '-01T00:00:00-00:00')
     final_day = start_date.at_end_of_month.day
-    end_date = Time.parse(year.to_s + '-' + params[:month].to_s + '-' + final_day.to_s)
+    end_date = Time.parse(year.to_s + '-' + params[:month].to_s + '-' + final_day.to_s + 'T23:59:59-00:00')
 
-    @transactions = Transaction.includes(:category).in_date_range(start_date, end_date).where(user_id: @currentUser.id)
+    @transactions = Transaction.includes(:category).in_date_range(start_date, end_date).where(user_id: @currentUser.id).order('date ASC')
 
     render partial: "users/show.json", content_type: "application/json"
   end
@@ -42,20 +42,12 @@ class TransactionsController < ApplicationController
   end
 
   def upload
-    file_data = params[:file]
-    xml_contents = ""
-    if file_data.respond_to?(:read)
-      xml_contents = file_data.read        
-    elsif file_data.respond_to?(:path)
-      xml_contents = File.read(file_data.path)        
-    else
-      logger.error "Bad file_data: #{file_data.class.name}: #{file_data.inspect}"
-    end
-
+    file_data = params[:file].tempfile
+    xml_contents = File.open(file_data, encoding: 'iso-8859-1').read
+    
     array = Array.new
 
     Hash.from_xml(xml_contents)["OFX"]["BANKMSGSRSV1"]["STMTTRNRS"]["STMTRS"]["BANKTRANLIST"]["STMTTRN"].inject({}) do |result, elem| 
-      # Check for duplicated register
       @duplicatedTransaction = Transaction.where(description: elem["MEMO"], user_id: @currentUser.id).first()
 
       @transaction =  Transaction.new
