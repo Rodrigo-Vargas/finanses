@@ -44,10 +44,7 @@ angular.module('finansesApp')
     }
 
     $scope.editCategory = function(category){
-      $scope.modalControl.formData = {
-        name : category.name,
-        id : category.id
-      }
+      $scope.modalControl.formData = category;
       $scope.modalControl.open();
     }
 

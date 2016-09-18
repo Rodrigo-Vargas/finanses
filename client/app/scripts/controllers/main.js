@@ -37,6 +37,7 @@ angular.module('finansesApp')
       $scope.transactions = [];
       $scope.selectedMonth = { id : new Date().getMonth() + 1 };
       $scope.selectedYear = new Date().getFullYear();
+      $scope.loadings = 0;
       
       var headers = {
          'Authorization': 'Token token=' + currentUserInfo.token,
@@ -44,6 +45,7 @@ angular.module('finansesApp')
       };
 
       $scope.getCategories = function(){
+         $scope.loadings++;
          $http({
             method: 'GET',
             url: '/api/categories',
@@ -51,15 +53,18 @@ angular.module('finansesApp')
          })
          .then(
             function successCallback(response) {
+               $scope.loadings--;
                $scope.modalControl.categories = response.data.categories;
             },
             function errorCallback(response) {
+               $scope.loadings--;
                console.log(response);
             }
          );
       }
 
       $scope.getTransactions = function(){
+         $scope.loadings++;
          $http({
             method: 'GET',
             url: '/api/transactions/period/' + $scope.selectedMonth.id + '/' + $scope.selectedYear,
@@ -67,9 +72,11 @@ angular.module('finansesApp')
          })
          .then(
             function successCallback(response) {
+               $scope.loadings--;
                $scope.transactions = response.data.transactions;
             },
             function errorCallback(response) {
+               $scope.loadings--;
                console.log(response);
             }
          );
@@ -113,7 +120,27 @@ angular.module('finansesApp')
       }
 
       $scope.addTransaction = function(){
+         $scope.modalControl.formData = {};
+         $scope.modalControl.formData.date = $scope.format(new Date(), 'dd/MM/yyyy');
          $scope.modalControl.open();
+      }
+
+      $scope.format = function(date, mask){
+         var stringDate = mask;
+
+         var day = date.getDate();
+         if (day < 10)
+            day = '0' + day;
+
+         var month = date.getMonth() + 1;
+         if (month < 10)
+            month = '0' + month;
+
+         stringDate = stringDate.replace("dd", day);
+         stringDate = stringDate.replace("MM", month);
+         stringDate = stringDate.replace("yyyy", date.getFullYear());
+         
+         return stringDate;
       }
 
       $scope.modalControl.addTransaction = function() {

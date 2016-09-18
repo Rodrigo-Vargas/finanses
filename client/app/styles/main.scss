@@ -11,6 +11,10 @@ header {
   background-color: #888;
 }
 
+aside {
+  margin-left: -15px;
+}
+
 .gutter-20.row {
   margin-right: -10px;
   margin-left: -10px;
@@ -60,6 +64,10 @@ header {
 }
 
 /* Transations */
+
+.content {
+  padding-top: 25px;
+}
 
 .commands-wrapper {
   margin: 10px;
@@ -113,4 +121,27 @@ header {
 .side-nav a:hover {
   background-color: #169a01;
   color: #eee;
+}
+
+/* Color Picker */
+.color-picker {
+  width: 400px;
+}
+
+.color-picker .input {
+  border: 1px solid #ccc;
+  height: 35px;
+  width: 100px;
+}
+
+.pallete .color {
+  display: inline-block;
+  height: 32px;
+  width: 32px;
+}
+
+.color-cicle {
+  border-radius: 50%;
+  height: 16px;
+  width: 16px;
 }

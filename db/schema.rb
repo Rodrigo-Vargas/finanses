@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20160910123256) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
-    t.integer  "color"
+    t.string   "color"
     t.integer  "parent_id"
     t.integer  "user_id"
     t.integer  "transaction_id"
