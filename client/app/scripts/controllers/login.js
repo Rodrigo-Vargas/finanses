@@ -29,7 +29,7 @@ angular.module('finansesApp')
       .then(function success(response){
         if (response.data.success)
         {
-          UserInfoService.set({ token : response.data.token });
+          UserInfoService.set(response.data.user);
           $location.path('/');
         }
         else

@@ -3,7 +3,7 @@ class UsersController < ApplicationController
     @user = User.create(user_params)
     
     if @user.valid?
-      render json: { 'success' => true, 'token' => @user.auth_token}
+      render json: { 'success' => true, 'user' => { 'name' => @user.name, 'token' => @user.auth_token } }
     else
       render json: { 'success' => false, 'errors' => @user.errors}
     end
@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     
     if @user
       if (@user.password == user_params[:password])
-        render json: { 'success' => true, 'token' => @user.auth_token }
+        render json: { 'success' => true, 'user' => { 'name' => @user.name, 'token' => @user.auth_token } }
       else
         render json: { 'success' => false }
       end
@@ -25,6 +25,6 @@ class UsersController < ApplicationController
 
   private
     def user_params
-      params.require(:user).permit(:email, :password)
+      params.require(:user).permit(:email, :name, :password)
     end
 end

@@ -9,8 +9,9 @@
  */
 angular.module('finansesApp')
   .controller('MainCtrl', function ($scope, $http, $location, UserInfoService) {
-      var currentUserInfo = UserInfoService.get();
-      if (!currentUserInfo)
+      $scope.currentUserInfo = UserInfoService.get();
+
+      if (!$scope.currentUserInfo)
       {
          $location.path('/login');
          return;
@@ -40,7 +41,7 @@ angular.module('finansesApp')
       $scope.loadings = 0;
       
       var headers = {
-         'Authorization': 'Token token=' + currentUserInfo.token,
+         'Authorization': 'Token token=' + $scope.currentUserInfo.token,
          'Accept': 'application/json;odata=verbose'
       };
 

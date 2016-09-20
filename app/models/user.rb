@@ -8,6 +8,10 @@ class User < ApplicationRecord
 
   private 
     def set_auth_token
+      if !name.present?
+        self.name = self.email
+      end
+
       return if auth_token.present?
       self.auth_token = generate_auth_token
     end

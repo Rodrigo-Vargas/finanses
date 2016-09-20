@@ -5,7 +5,7 @@
   </div>
   <form name="signupForm" ng-submit="submit(signupForm.$valid)" novalidate>
     <div class="form-group">
-      <input type="text" name="email" class="form-control" placeholder="Email" ng-model="formData.email">
+      <input type="email" name="email" class="form-control" placeholder="Email" ng-model="formData.email">
       <p ng-show="signupForm.email.$invalid && submitted" class="help-block">Email inválido</p>
     </div>
 
