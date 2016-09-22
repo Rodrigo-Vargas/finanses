@@ -29,19 +29,6 @@ module.exports = function (grunt) {
 
   // Define the configuration for all the tasks
   grunt.initConfig({
-    shell: {
-      startRailsServer: {
-        command: 'rails server',
-        options: {
-          // If async: true were omitted, the rails server
-          // command would prevent subsequent commands
-          // from running.
-          async: true
-        }
-      }
-    },
-  
-
     // Project settings
     yeoman: appConfig,
 
@@ -89,13 +76,6 @@ module.exports = function (grunt) {
         hostname: 'localhost',
         livereload: 35729
       },
-      proxies: [
-        {
-          context: '/api',
-          host: 'localhost',
-          port: 3000
-        }
-      ],
       livereload: {
         options: {
           open: true,
@@ -103,10 +83,8 @@ module.exports = function (grunt) {
             if (!Array.isArray(options.base)) {
               options.base = [options.base];
             }
- 
-            // Setup the proxy
+
             var middlewares = [
-              require('grunt-connect-proxy/lib/utils').proxyRequest,
               connect.static('.tmp'),
               connect().use(
                 '/bower_components',
@@ -114,12 +92,12 @@ module.exports = function (grunt) {
               ),
               connect.static(appConfig.app)
             ];
- 
+
             // Make directory browse-able.
             var directory = options.directory || options.base[options.base.length - 1];
             middlewares.push(connect.directory(directory));
- 
-            return middlewares;            
+
+            return middlewares;
           }
         }
       },
@@ -253,7 +231,7 @@ module.exports = function (grunt) {
         src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         ignorePath: /(\.\.\/){1,2}bower_components\//
       }
-    }, 
+    },
 
     // Compiles Sass to CSS and generates necessary files if requested
     compass: {
@@ -499,8 +477,6 @@ module.exports = function (grunt) {
       'clean:server',
       'wiredep',
       'concurrent:server',
-      'shell:startRailsServer',
-      'configureProxies',
       'postcss:server',
       'connect:livereload',
       'watch'
@@ -546,7 +522,4 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
-
-
-  grunt.loadNpmTasks('grunt-connect-proxy');
 };

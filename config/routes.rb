@@ -7,6 +7,4 @@ Rails.application.routes.draw do
     resources :categories,                  except: [:new, :edit]   
 		post   '/upload',                       to: 'transactions#upload'    
 	end
-  
-  match "*path",              to: redirect("/index.html"), via: :all
 end

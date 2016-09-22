@@ -39,17 +39,17 @@ angular
       })
       .when('/signup', {
         templateUrl: 'views/signup.html',
-        controller: 'SignupCtrl', 
+        controller: 'SignupCtrl',
         controllerAs: 'signup'
       })
       .when('/login', {
         templateUrl: 'views/login.html',
-        controller: 'LoginCtrl', 
+        controller: 'LoginCtrl',
         controllerAs: 'login'
       })
       .when('/logout', {
         templateUrl: 'views/logout.html',
-        controller: 'LogoutCtrl', 
+        controller: 'LogoutCtrl',
         controllerAs: 'logout'
       })
       .otherwise({
@@ -228,5 +228,5 @@ angular
           scope.ngModel = selectedColor.code;
         }
       }
-    }    
+    }
   });
