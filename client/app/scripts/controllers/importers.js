@@ -9,8 +9,8 @@
  */
 angular.module('finansesApp')
   .controller('ImportersCtrl', function ($scope, $http, $location, UserInfoService, FileUploader) {
-      var currentUserInfo = UserInfoService.get();
-      if (!currentUserInfo)
+      $scope.currentUserInfo = UserInfoService.get();
+      if (!$scope.currentUserInfo)
       {
          $location.path('/login');
          return;
@@ -20,7 +20,7 @@ angular.module('finansesApp')
       });
 
       var headers = {
-         'Authorization': 'Token token=' + currentUserInfo.token,
+         'Authorization': 'Token token=' + $scope.currentUserInfo.token,
          'Accept': 'application/json;odata=verbose'
       };
 
