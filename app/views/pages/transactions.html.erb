@@ -1,0 +1,336 @@
+<div ng-app="transactionsApp">
+  <div ng-controller="controller">
+    <header class="row">
+      <div class="logo col-xs-8">
+        <a class="" href="/">Finan$es</a>
+      </div>
+      <div class="user-info-wrapper col-xs-4">
+        <span>Olá </span><span>{{ currentUserInfo.name }}</span>
+        <a class="btn btn-default pull-right" href="/logout">Sair</a>
+      </div>
+    </header>
+
+    <div class="row">
+      <div class="col-xs-3">
+        <aside class="side-nav">
+          <ul>
+            <li class="active"><a href="/">Lançamentos</a></li>
+            <li><a href="/importadores">Importadores</a></li>
+            <li><a href="/categorias">Categorias</a></li>
+          </ul>
+        </aside>
+      </div>
+
+      <div class="col-xs-9">
+        <div class="content">
+          <div class="row">
+            <div class="col-xs-2">
+              <div class="commands-wrapper">
+                <a class="btn btn-primary" ng-click="addTransaction()">Adicionar</a>  
+              </div>
+            </div>
+            <div class="col-xs-4">
+              <select class="form-control"
+                      ng-model="selectedMonth"
+                      ng-options="month as month.name for month in months track by month.id"
+                      ng-change="monthChange()"></select>    
+            </div>
+            <div class="col-xs-4">
+              <select class="form-control"
+                      ng-model="selectedYear"
+                      ng-options="year as year for year in years track by year"
+                      ng-change="yearChange()"></select>
+            </div>
+          </div>
+
+          <div class="transaction-list" ng-show="transactions.length > 0 && loadings == 0">
+            <div class="item" ng-repeat="transaction in transactions track by transaction.id">
+              <div class="row">
+                <div class="col-xs-6">
+                  <div>
+                    {{ transaction.description }}
+                  </div>
+                  <div>
+                    {{ transaction.date }}
+                  </div>
+                </div>
+                <div class="col-xs-2">
+                  {{ transaction.category.name }}
+                </div>
+                <div class="col-xs-2">
+                  {{ transaction.value | money:"R$ ":"2":"," }}
+                </div>
+                <div class="col-xs-2">
+                  <a class="btn btn-success icon" ng-click="editTransaction(transaction)"><i class="fa fa-pencil"></i></a>  
+                  <a class="btn btn-success icon" ng-click="destroyTransaction(transaction.id)"><i class="fa fa-trash"></i></a>  
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="transactions-loader" ng-show="loadings > 0">
+            <div class='uil-finanses-css' style='-webkit-transform:scale(0.58)'>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+
+          <div ng-show="transactions.length == 0 && loadings == 0">
+            <span>Sem lançamentos no período.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <rvg-modal control="modalControl" template-url="modalTemplate.html"></rvg-modal> 
+  </div>
+</div>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-cookies.js"></script>
+
+<script type="text/javascript">
+  angular
+  .module('transactionsApp', [
+    'ngCookies'
+  ])
+  .controller('controller', function($scope, $http, UserInfoService){
+    $scope.currentUserInfo = UserInfoService.get();
+
+    if (!$scope.currentUserInfo)
+    {
+       $location.path('/login');
+       return;
+    }
+
+    $scope.months =   [
+                         { id : 1,  name : "Janeiro" },
+                         { id : 2,  name : "Fevereiro" },
+                         { id : 3,  name : "Março" },
+                         { id : 4,  name : "Abril" },
+                         { id : 5,  name : "Maio" },
+                         { id : 6,  name : "Junho" },
+                         { id : 7,  name : "Julho" },
+                         { id : 8,  name : "Agosto" },
+                         { id : 9,  name : "Setembro" },
+                         { id : 10, name : "Outubro" },
+                         { id : 11, name : "Novembro" },
+                         { id : 12, name : "Dezembro" },
+                      ];
+    $scope.years = [2011, 2012, 2013, 2014, 2015, 2016];
+
+
+    $scope.modalControl = {};
+    $scope.transactions = [];
+    $scope.selectedMonth = { id : new Date().getMonth() + 1 };
+    $scope.selectedYear = new Date().getFullYear();
+    $scope.loadings = 0;
+    
+    var headers = {
+       'Authorization': 'Token token=' + $scope.currentUserInfo.token,
+       'Accept': 'application/json;odata=verbose'
+    };
+
+    $scope.getCategories = function(){
+       $scope.loadings++;
+       $http({
+          method: 'GET',
+          url: '/api/categories',
+          headers : headers
+       })
+       .then(
+          function successCallback(response) {
+             $scope.loadings--;
+             $scope.modalControl.categories = response.data.categories;
+          },
+          function errorCallback(response) {
+             $scope.loadings--;
+             console.log(response);
+          }
+       );
+    }
+
+    $scope.getTransactions = function(){
+       $scope.loadings++;
+       $http({
+          method: 'GET',
+          url: '/api/transactions/period/' + $scope.selectedMonth.id + '/' + $scope.selectedYear,
+          headers : headers
+       })
+       .then(
+          function successCallback(response) {
+             $scope.loadings--;
+             $scope.transactions = response.data.transactions;
+          },
+          function errorCallback(response) {
+             $scope.loadings--;
+             console.log(response);
+          }
+       );
+    }
+
+    $scope.monthChange = function(){
+       $scope.getTransactions();
+    }
+
+    $scope.yearChange = function(){
+       $scope.getTransactions();
+    }
+
+    $scope.destroyTransaction = function(transactionId){
+       if (!confirm('Are you sure?'))
+          return;
+
+       $http({
+          method: 'DELETE',
+          url: '/api/transactions/' + transactionId,
+          headers : headers
+       })
+       .then(
+          function successCallback(response) {
+             $scope.getTransactions();
+          },
+          function errorCallback(response) {
+             console.log(response);
+          }
+       );
+    }
+
+    $scope.editTransaction = function(transaction){
+       $scope.modalControl.formData = {
+          description : transaction.description,
+          value : transaction.value,
+          date : transaction.date,
+          id : transaction.id
+       }
+       $scope.modalControl.open();
+    }
+
+    $scope.addTransaction = function(){
+       $scope.modalControl.formData = {};
+       $scope.modalControl.formData.date = $scope.format(new Date(), 'dd/MM/yyyy');
+       $scope.modalControl.open();
+    }
+
+    $scope.format = function(date, mask){
+       var stringDate = mask;
+
+       var day = date.getDate();
+       if (day < 10)
+          day = '0' + day;
+
+       var month = date.getMonth() + 1;
+       if (month < 10)
+          month = '0' + month;
+
+       stringDate = stringDate.replace("dd", day);
+       stringDate = stringDate.replace("MM", month);
+       stringDate = stringDate.replace("yyyy", date.getFullYear());
+       
+       return stringDate;
+    }
+
+    $scope.modalControl.addTransaction = function() {
+       var url;
+       if ($scope.modalControl.formData.id > 0)
+          url = '/api/transactions/edit/' + $scope.modalControl.formData.id;
+       else
+          url = '/api/transactions';
+
+       $http({
+          method: 'POST',
+          url: url,
+          headers : headers,
+          data: { transaction : $scope.modalControl.formData }
+       })
+       .then(
+          function successCallback(response) {
+             $scope.modalControl.formData = {};
+             $scope.modalControl.close();
+             $scope.getTransactions();
+          },
+          function errorCallback(response) {
+             console.log(response);
+          }
+       );
+    };
+
+    $scope.getCategories();
+    $scope.getTransactions();
+  })
+  .factory('UserInfoService', function($cookies) {
+    var userInfo;
+
+    return {
+      get : function(){
+        if (!userInfo)
+        {
+          if ($cookies.get('userInfo'))
+            userInfo = JSON.parse($cookies.get('userInfo'));
+        }
+
+        return userInfo;
+      },
+      set : function(value){
+        userInfo = value;
+
+        var expirationDate = new Date();
+        expirationDate.setMinutes(expirationDate.getMinutes() + 60);
+        $cookies.put('userInfo', JSON.stringify(userInfo), {'expires' : expirationDate });
+      },
+      clear: function() {
+        console.log('Clear!');
+        userInfo = null;
+        $cookies.remove('userInfo');
+      }
+    };
+  })
+  .filter('money', function(){
+    return function(input, unit, decimalPlaces, decimalUnit) {
+      var output = String(input);
+
+      if (decimalPlaces)
+      {
+        var outputArray = output.split('');
+        var spliced = outputArray.splice(outputArray.length-decimalPlaces);
+
+        outputArray = outputArray.concat([decimalUnit]);
+        outputArray = outputArray.concat(spliced);
+        output = outputArray.join('');
+      }
+
+      if (unit)
+        output = unit + output;
+      else
+        output = "$" + output;
+
+      return output;
+    }
+    })
+  .directive('rvgModal', function(){
+    return {
+      restrict: 'E',
+      replace: true,
+      templateUrl: function(elem, attr){
+        return "/" + attr.templateUrl;
+      },
+      scope: {
+        control: '='
+      },
+      link: function(scope, element, attrs) {
+        scope.internalControl = scope.control || {};
+        scope.opened = false;
+
+        scope.internalControl.open = function() {
+          scope.opened = true;
+        }
+
+        scope.internalControl.close = function(){
+          scope.opened = false;
+          scope.$emit('modalClose');
+        }
+      }
+    }
+  });
+</script>
