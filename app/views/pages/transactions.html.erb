@@ -87,13 +87,10 @@
   </div>
 </div>
 
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-cookies.js"></script>
-
 <script type="text/javascript">
   angular
   .module('transactionsApp', [
-    'ngCookies'
+    'finanses.services'
   ])
   .controller('controller', function($scope, $http, UserInfoService){
     $scope.currentUserInfo = UserInfoService.get();
@@ -258,34 +255,7 @@
 
     $scope.getCategories();
     $scope.getTransactions();
-  })
-  .factory('UserInfoService', function($cookies) {
-    var userInfo;
-
-    return {
-      get : function(){
-        if (!userInfo)
-        {
-          if ($cookies.get('userInfo'))
-            userInfo = JSON.parse($cookies.get('userInfo'));
-        }
-
-        return userInfo;
-      },
-      set : function(value){
-        userInfo = value;
-
-        var expirationDate = new Date();
-        expirationDate.setMinutes(expirationDate.getMinutes() + 60);
-        $cookies.put('userInfo', JSON.stringify(userInfo), {'expires' : expirationDate });
-      },
-      clear: function() {
-        console.log('Clear!');
-        userInfo = null;
-        $cookies.remove('userInfo');
-      }
-    };
-  })
+  })  
   .filter('money', function(){
     return function(input, unit, decimalPlaces, decimalUnit) {
       var output = String(input);

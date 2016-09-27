@@ -1,0 +1,30 @@
+<% content_for :content do %>
+  <header class="row">
+    <div class="logo col-xs-8">
+      <a class="" href="/">Finan$es</a>
+    </div>
+    <div class="user-info-wrapper col-xs-4">
+      <span>Olá </span>
+      <span>{{ currentUserInfo.name }}</span>
+      <a class="btn btn-default pull-right" href="/logout">Sair</a>
+    </div>
+  </header>
+
+  <div class="row">
+    <div class="col-xs-3">
+      <aside class="side-nav">
+        <ul>
+          <li class="active"><a href="/">Lançamentos</a></li>
+          <li><a href="/importadores">Importadores</a></li>
+          <li><a href="/categorias">Categorias</a></li>
+        </ul>
+      </aside>
+    </div>
+
+    <div class="col-xs-9">
+      <%= yield %>
+    </div>
+  </div>  
+<% end %>
+
+<%= render template: "layouts/application" %>

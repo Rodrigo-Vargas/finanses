@@ -9,6 +9,8 @@ Rails.application.routes.draw do
 	end
 
   scope '/' do
-    get '/transactions', to: 'pages#transactions'
+    #get '/',             to: 'pages#transactions'
+    get '/lancamentos',  to: 'pages#transactions'
+    get '/importadores', to: 'pages#importers'
   end
 end

@@ -1,0 +1,115 @@
+
+<div ng-app="importersApp">
+  <div ng-controller="controller">
+    <div class="content">
+    <input type="file" nv-file-select uploader="uploader" />
+
+    <div class="col-md-9" style="margin-bottom: 40px">
+       <div>
+          <div>
+              Upload progress:
+              <div class="progress" style="">
+                  <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+              </div>
+          </div>
+       </div>
+
+       <div class="imported-list">
+          <div class="item" ng-repeat="transaction in importedTransactions track by $index">
+             <div class="row">
+                <div class="col-xs-5">
+                  <div>
+                    {{ transaction.original.description }}
+                    {{ transaction.original.value }}
+                  </div>
+                  <div>
+                    {{ transaction.original.date }}
+                  </div>
+                </div>
+                <div class="col-xs-2">
+                  <a class="btn" title="Importar" ng-click="importItem(transaction, $index)"><i class="fa fa-check"></i></a>
+                  <a class="btn" title="Dispensar" ng-click="removeItem($index)"><i class="fa fa-close"></i></a>      
+                </div>
+                
+                <div class="col-xs-5">
+                  <div ng-hide="transaction.found">
+                    <span>Registro não encontrado no servidor</span>
+                  </div>
+                  <div ng-show="transaction.found">
+                    <div>
+                      {{ transaction.found.description }}
+                      {{ transaction.found.value }}
+                    </div>
+                    <div>
+                      {{ transaction.found.date }}
+                    </div>
+                  </div>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  angular
+  .module('importersApp', [
+    'app.services',
+    'ngCookies',
+    'angularFileUpload'
+  ])
+  .controller('controller', function($scope, $http, $location, UserInfoService, FileUploader){
+      var uploader = $scope.uploader = new FileUploader({
+        url: '/api/upload'
+      });
+
+      uploader.onAfterAddingFile = function(fileItem){
+        console.log('tet')
+        fileItem.upload();
+      }
+
+      uploader.onBeforeUploadItem = function(item) {
+        item.headers = headers;
+      };
+
+      uploader.onCompleteItem = function(fileItem, response, status, headers) {
+        $scope.importedTransactions = response;
+      };
+
+      $scope.currentUserInfo = UserInfoService.get();
+      if (!$scope.currentUserInfo)
+      {
+        $location.path('/login');
+        return;
+      }
+
+      var headers = {
+        'Authorization': 'Token token=' + $scope.currentUserInfo.token,
+        'Accept': 'application/json;odata=verbose'
+      };
+
+      $scope.importItem = function(transaction, index){
+        $http({
+          method: 'POST',
+          url: '/api/transactions',
+          headers : headers,
+          data: { transaction : transaction.original }
+        })
+        .then(
+          function successCallback(response) {
+            $scope.importedTransactions.splice(index, 1);
+          },
+          function errorCallback(response) {
+            console.log(response);
+          }
+        );
+      }
+
+      $scope.removeItem = function(index){
+        $scope.importedTransactions.splice(index, 1);
+      }      
+  });
+
+</script>
