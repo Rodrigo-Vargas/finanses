@@ -6,8 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-cookies.js"></script>
-    <%= javascript_include_tag 'application' %>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-cookies.js"></script>    
   </head>
 
   <body ng-app="finansesApp">
@@ -29,6 +28,8 @@
       })
 
     </script>
+
+    <%= javascript_include_tag 'application' %>
 
     <div class="container-fluid">
       <%= content_for?(:content) ? yield(:content) : yield %>

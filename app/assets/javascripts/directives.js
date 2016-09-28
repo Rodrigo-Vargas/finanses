@@ -1,5 +1,5 @@
 angular
-  .module('app.directives', ['ngCookies'])
+  .module('app.directives', [])
   .directive('rvgModal', function(){
     return {
       restrict: 'E',

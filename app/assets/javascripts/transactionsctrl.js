@@ -1,67 +1,4 @@
-  <div ng-controller="TransactionsCtrl">
-    <div class="content">
-      <div class="row">
-        <div class="col-xs-2">
-          <div class="commands-wrapper">
-            <a class="btn btn-primary" ng-click="addTransaction()">Adicionar</a>  
-          </div>
-        </div>
-        <div class="col-xs-4">
-          <select class="form-control"
-                  ng-model="selectedMonth"
-                  ng-options="month as month.name for month in months track by month.id"
-                  ng-change="monthChange()"></select>    
-        </div>
-        <div class="col-xs-4">
-          <select class="form-control"
-                  ng-model="selectedYear"
-                  ng-options="year as year for year in years track by year"
-                  ng-change="yearChange()"></select>
-        </div>
-      </div>
-
-      <div class="transaction-list" ng-show="transactions.length > 0 && loadings == 0">
-        <div class="item" ng-repeat="transaction in transactions track by transaction.id">
-          <div class="row">
-            <div class="col-xs-6">
-              <div>
-                {{ transaction.description }}
-              </div>
-              <div>
-                {{ transaction.date }}
-              </div>
-            </div>
-            <div class="col-xs-2">
-              {{ transaction.category.name }}
-            </div>
-            <div class="col-xs-2">
-              {{ transaction.value | money:"R$ ":"2":"," }}
-            </div>
-            <div class="col-xs-2">
-              <a class="btn btn-success icon" ng-click="editTransaction(transaction)"><i class="fa fa-pencil"></i></a>  
-              <a class="btn btn-success icon" ng-click="destroyTransaction(transaction.id)"><i class="fa fa-trash"></i></a>  
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="transactions-loader" ng-show="loadings > 0">
-        <div class='uil-finanses-css' style='-webkit-transform:scale(0.58)'>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-
-      <div ng-show="transactions.length == 0 && loadings == 0">
-        <span>Sem lançamentos no período.</span>
-      </div>
-    </div>
-    <rvg-modal control="modalControl" template-url="modalTemplate.html"></rvg-modal> 
-  </div>
-
-<script type="text/javascript">
-  angular
+angular
   .module('finansesApp')
   .controller('TransactionsCtrl', function($scope, $http, $window, UserInfoService){
     $scope.currentUserInfo = UserInfoService.get();
@@ -249,4 +186,3 @@
       return output;
     }
     });
-</script>
