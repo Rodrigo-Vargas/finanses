@@ -1,4 +1,3 @@
-<div ng-app="transactionsApp">
   <div ng-controller="controller">
     <div class="content">
       <div class="row">
@@ -60,20 +59,16 @@
     </div>
     <rvg-modal control="modalControl" template-url="modalTemplate.html"></rvg-modal> 
   </div>
-</div>
 
 <script type="text/javascript">
   angular
-  .module('transactionsApp', [
-    'app.services',
-    'app.directives'
-  ])
-  .controller('controller', function($scope, $http, UserInfoService){
+  .module('finansesApp')
+  .controller('controller', function($scope, $http, $window, UserInfoService){
     $scope.currentUserInfo = UserInfoService.get();
 
     if (!$scope.currentUserInfo)
     {
-       $location.path('/login');
+       $window.location.href = '/login';
        return;
     }
 
