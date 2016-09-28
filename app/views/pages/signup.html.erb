@@ -1,0 +1,59 @@
+<div ng-app="signupApp">
+  <div ng-controller="Controller">
+    <div class="form-container">
+      <div class="server-message" ng-show="serverMessage">
+        <span>{{ serverMessage }}</span>
+      </div>
+      <form name="signupForm" ng-submit="submit(signupForm.$valid)" novalidate>
+        <div class="form-group">
+          <input type="email" name="email" class="form-control" placeholder="Email" ng-model="formData.email">
+          <p ng-show="signupForm.email.$invalid && submitted" class="help-block">Email inválido</p>
+        </div>
+
+        <div class="form-group">
+          <input type="password" name="password" class="form-control" placeholder="Senha" ng-model="formData.password">
+          <p ng-show="signupForm.password.$invalid && submitted" class="help-block">Senha inválida</p>      
+        </div>
+
+        <button type="submit" class="btn btn-block btn-primary">Cadastrar</button>
+          <div class="text-center">
+            <span>Já possui uma conta? </span>
+          </div>
+          <div class="text-center">
+            <a href="/login">Faça login agora!</a>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  angular.module('signupApp', ['app.services'])
+    .controller('Controller', function ($scope, $http, $window, UserInfoService) {
+      $scope.submit = function(isValid){
+        $scope.submitted = true;
+        if (!isValid)
+          return;
+
+        $http({
+          method: 'POST',
+          url: '/api/users',
+          data : $scope.formData
+        })
+        .then(function success(response){
+          if (response.data.success)
+          {
+            UserInfoService.set(response.data.user);
+            $window.location.href = '/transactions';
+          }
+          else
+          {
+            $scope.serverMessage = "Email já cadastrado"
+          }
+        },
+        function error(response){
+          console.log(response);
+        });
+      }
+    });
+</script>

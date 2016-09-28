@@ -12,4 +12,6 @@ Rails.application.routes.draw do
   get '/lancamentos',  to: 'pages#transactions'
   get '/importadores', to: 'pages#importers'
   get '/categorias',   to: 'pages#categories'
+  get '/login',        to: 'pages#login'
+  get '/signup',       to: 'pages#signup'
 end

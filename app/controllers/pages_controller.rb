@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  layout "main"
+  layout "main", except: [:login, :signup]
   def transactions 
 
   end
@@ -9,6 +9,14 @@ class PagesController < ApplicationController
   end
 
   def categories
+
+  end
+
+  def login
+
+  end
+
+  def signup
 
   end
 end
