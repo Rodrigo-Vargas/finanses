@@ -12,7 +12,5 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require services.js
-//= require directives.js
 //= require transactionsctrl
 //= require_tree .
