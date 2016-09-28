@@ -8,9 +8,8 @@ Rails.application.routes.draw do
 		post   '/upload',                       to: 'transactions#upload'    
 	end
 
-  scope '/' do
-    #get '/',             to: 'pages#transactions'
-    get '/lancamentos',  to: 'pages#transactions'
-    get '/importadores', to: 'pages#importers'
-  end
+  root                 to: 'pages#transactions'
+  get '/lancamentos',  to: 'pages#transactions'
+  get '/importadores', to: 'pages#importers'
+  get '/categorias',   to: 'pages#categories'
 end

@@ -7,4 +7,8 @@ class PagesController < ApplicationController
   def importers
 
   end
+
+  def categories
+
+  end
 end
