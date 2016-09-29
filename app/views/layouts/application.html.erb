@@ -6,34 +6,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-cookies.js"></script>    
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-cookies.js"></script>
+        <%= javascript_include_tag 'application' %>
   </head>
 
-  <%= javascript_include_tag 'services' %>
-  <%= javascript_include_tag 'directives' %>
-
   <body ng-app="finansesApp">
-    <script type="text/javascript">
-      angular
-      .module('finansesApp', [
-        'app.services',
-        'app.directives',
-        'angularFileUpload'
-      ])
-      .controller('HeaderCtrl', function($scope, $window, UserInfoService){
-        $scope.currentUserInfo = UserInfoService.get();
-
-        $scope.logout = function(){
-          UserInfoService.clear();
-          $window.location.href = '/login';
-      
-        }
-      })
-
-    </script>
-
-    <%= javascript_include_tag 'application' %>
-
     <div class="container-fluid">
       <%= content_for?(:content) ? yield(:content) : yield %>
     </div>
