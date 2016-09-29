@@ -4,7 +4,7 @@ angular
     'app.directives',
     'angularFileUpload'
   ])
-  .controller('HeaderCtrl', function($scope, $window, UserInfoService){
+  .controller('HeaderCtrl', ['$scope', '$window', 'UserInfoService', function($scope, $window, UserInfoService){
     $scope.currentUserInfo = UserInfoService.get();
 
     $scope.logout = function(){
@@ -12,4 +12,4 @@ angular
       $window.location.href = '/login';
   
     }
-  })
+  }]);

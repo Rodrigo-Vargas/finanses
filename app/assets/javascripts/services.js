@@ -1,6 +1,6 @@
 angular
   .module('app.services', ['ngCookies'])
-  .factory('UserInfoService', function($cookies) {
+  .factory('UserInfoService', ['$cookies', function($cookies) {
     var userInfo;
 
     return {
@@ -25,4 +25,4 @@ angular
         $cookies.remove('userInfo');
       }
     };
-  })
+  }]);

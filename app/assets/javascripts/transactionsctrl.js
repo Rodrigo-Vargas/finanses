@@ -1,6 +1,6 @@
 angular
   .module('finansesApp')
-  .controller('TransactionsCtrl', function($scope, $http, $window, UserInfoService){
+  .controller('TransactionsCtrl', ['$scope', '$http', '$window', 'UserInfoService', function($scope, $http, $window, UserInfoService){
     $scope.currentUserInfo = UserInfoService.get();
 
     if (!$scope.currentUserInfo)
@@ -163,7 +163,7 @@ angular
 
     $scope.getCategories();
     $scope.getTransactions();
-  })  
+  }])  
   .filter('money', function(){
     return function(input, unit, decimalPlaces, decimalUnit) {
       var output = String(input);
