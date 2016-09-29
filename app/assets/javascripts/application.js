@@ -13,7 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require angularFileUpload
-//= require app.angular
 //= require directives
 //= require services
+//= require app.angular
 //= require transactionsctrl
