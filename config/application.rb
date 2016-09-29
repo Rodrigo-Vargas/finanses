@@ -18,5 +18,8 @@ module Finanses
         resource '*', :headers => :any, :methods => [:get, :post, :options]
       end
     end
+
+    config.assets.paths << Rails.root.join('vendor', 'assets', 'fonts')
+    config.assets.precompile << /\.(?:svg|eot|woff|ttf)$/
   end
 end
