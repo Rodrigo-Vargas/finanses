@@ -15,7 +15,7 @@
 //= require angular
 //= require angular-cookies
 //= require angularFileUpload
-//= require directives
 //= require services
+//= require directives
 //= require app.angular
 //= require transactionsctrl
