@@ -12,8 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= angular.js
-//= angular-cookies
+//= require angular
+//= require angular-cookies
 //= require angularFileUpload
 //= require directives
 //= require services
