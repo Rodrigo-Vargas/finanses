@@ -14,18 +14,6 @@
  *= require_self
  */
 
-body {
-  background-color: #EAEAEA;
-}
-
-header {
-  background-color: #888;
-}
-
-aside {
-  margin-left: -15px;
-}
-
 .gutter-20.row {
   margin-right: -10px;
   margin-left: -10px;
@@ -53,6 +41,82 @@ aside {
   padding-left: 0;
 }
 
+body {
+  background-color: #EEE;
+}
+
+a {
+  cursor: pointer;
+}
+
+header {
+  background-color: #fff;
+  z-index: 2;
+}
+
+header .logo {
+  background-color: #30D371;
+  color: #fff;
+  padding: 25px;
+}
+
+header .mobile-menu {
+  background-color: #30D371;
+  color: #fff;   
+}
+
+header .logo a {
+  color: #fff;
+  display: block;
+  text-align: center;
+}
+
+header .mobile-menu a {
+  color: #fff;
+  display: block;
+  padding: 25px 20px;
+}
+
+header .logo a:hover {
+  text-decoration: none;
+}
+
+.user-info-wrapper {
+  background-color: #fff;
+  display: block;
+  padding-top: 25px;
+  padding-bottom: 24px;
+}
+
+.side-nav.opened {
+  display: block !important;
+}
+
+.side-nav {
+  background-color: #323544;
+}
+
+.side-nav ul {
+  list-style: none;
+  padding: 0px;
+  margin: 0px -15px 0px -15px;
+}
+
+.side-nav li {
+  margin: 0px;
+}
+
+.side-nav a, .side-nav a:focus {
+  color: #eee;
+  display: block;
+  padding: 20px 10px;
+  text-decoration: none;
+}
+
+.side-nav a:hover {
+  background-color: #1e202c;
+}
+
 /* Login */
 .form-container {
   background-color: #fff;
@@ -77,7 +141,10 @@ aside {
 /* Transations */
 
 .content {
-  padding-top: 25px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  margin-top: 25px;
+  padding: 25px;
 }
 
 .commands-wrapper {
@@ -105,33 +172,6 @@ aside {
 
 .icon {
   color: #fff;
-}
-
-.side-nav {
-  background-color: #ddd;
-}
-
-.side-nav ul {
-  list-style: none;
-  padding: 0px;
-  margin: 0px;
-}
-
-.side-nav li {
-  border-bottom: 1px solid #888;
-  margin: 0px;
-}
-
-.side-nav a, .side-nav a:focus {
-  color: #444;
-  display: block;
-  padding: 20px 10px;
-  text-decoration: none;
-}
-
-.side-nav a:hover {
-  background-color: #169a01;
-  color: #eee;
 }
 
 /* Color Picker */
